@@ -10,6 +10,8 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -25,6 +27,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
+
 public class MapDemoActivity extends AppCompatActivity implements
 		GoogleApiClient.ConnectionCallbacks,
 		GoogleApiClient.OnConnectionFailedListener,
@@ -36,6 +39,12 @@ public class MapDemoActivity extends AppCompatActivity implements
 	private LocationRequest mLocationRequest;
 	private long UPDATE_INTERVAL = 60000;  /* 60 secs */
 	private long FASTEST_INTERVAL = 5000; /* 5 secs */
+
+	private Button checkPositionButton;
+
+	private double currentLat;
+	private double currentLong;
+
 
 	/*
 	 * Define a request code to send to Google Play services This code is
@@ -59,6 +68,18 @@ public class MapDemoActivity extends AppCompatActivity implements
 		} else {
 			Toast.makeText(this, "Error - Map Fragment was null!!", Toast.LENGTH_SHORT).show();
 		}
+
+
+		checkPositionButton = (Button) findViewById(R.id.posButton);
+
+		checkPositionButton.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View view){
+//				startLocationUpdates();
+				Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+				Toast.makeText(getApplicationContext(), String.valueOf(location.getLatitude()), Toast.LENGTH_LONG).show();
+			}
+		});
 
 	}
 
@@ -169,7 +190,9 @@ public class MapDemoActivity extends AppCompatActivity implements
 			LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 			CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
 			map.animateCamera(cameraUpdate);
-            startLocationUpdates();
+
+            //startLocationUpdates();
+
         } else {
 			Toast.makeText(this, "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
 		}
@@ -186,10 +209,13 @@ public class MapDemoActivity extends AppCompatActivity implements
 
     public void onLocationChanged(Location location) {
         // Report to the UI that the location was updated
-        String msg = "Updated Location: " +
-                Double.toString(location.getLatitude()) + "," +
-                Double.toString(location.getLongitude());
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+//        String msg = "Updated Location: " +
+//                Double.toString(location.getLatitude()) + "," +
+//                Double.toString(location.getLongitude());
+//        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+
+		currentLat = location.getLatitude();
+		currentLong = location.getLongitude();
 
     }
 
