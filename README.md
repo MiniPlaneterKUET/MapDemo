@@ -6,3 +6,5 @@ A simple Google Maps Android API v2 Demo app. This app helps us test if we have 
 ![android_map](http://i.imgur.com/Fg94SVi.png)
 
 I've uploaded my android API key, so anyone can try the app out.
+
+Added some upgradation 
